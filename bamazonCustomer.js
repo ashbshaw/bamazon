@@ -34,65 +34,84 @@ function displayProducts() {
       console.log("ID: " + res[i].item_id + " | " + "Product: " + res[i].product_name + " | " + "Department: " + res[i].department_name + " | " + "Price: " + res[i].price + " | " + "Quantity: " + res[i].stock_quantity);
       console.log('------------------------------------------------------------------------------------------------------------')
     }
+    selectProducts(res);
   });
-  
-  selectProducts();
+
+
   //connection.end();
 }
 
 // Two user prompts: 1) ask ID of product they want to buy, 2) ask how many units they want to buy
-function selectProducts() {
-  connection.query("SELECT * FROM products", function (err, res) {
-    if (err) throw err;
-    inquirer.prompt([
-      {
-        name: "id",
-        type: "input",
-        message: "What is the ID of the product you would like to purchase?\n"
-      },
-      {
-        name: "quantity",
-        type: "input",
-        message: "How many would you like to purchase?\n"
-      }
+function selectProducts(inventory) {
+  inquirer.prompt([
+    {
+      name: "id",
+      type: "input",
+      message: "What is the ID of the product you would like to purchase?\n"
+      // add validation
+    },
+    {
+      name: "quantity",
+      type: "input",
+      message: "How many would you like to purchase?\n"
+      // add validation
+    }
 
-    ]).then(function (answer) {
-      function updateProduct() {
-        console.log("Updating product stock...\n");
-        // trying to connect chosen product with database and not sure how to proceed
-        var chosenProduct;
-        for (var j = 0; j < res.length; j++) {
-          if (res[j].product_name === answer.id) {
-            chosenProduct = res[j];
+  ]).then(function (answer) {
+    console.log("Updating product stock...\n");
+    // trying to connect chosen product with database and not sure how to proceed
+    var chosenProduct;
+    for (var i = 0; i < inventory.length; i++) {
+      if (inventory[i].item_id === parseInt(answer.id)) {
+        chosenProduct = inventory[i];
+      }
+    }
+
+    if (!chosenProduct) {
+      console.log("Sorry, we do not carry that item.");
+      startOver()
+    }
+    // After order is placed, check to see if enough inventory. 
+    if (chosenProduct){
+
+      if (chosenProduct.stock_quantity >= parseInt(answer.quantity)) {
+        connection.query(
+          "UPDATE products SET stock_quantity = stock_quantity - ? WHERE item_id = ?",
+          [
+            answer.quantity, chosenProduct.item_id
+          ],
+
+          function (err) {
+            if (err) throw err;
+            console.log("Thank you for purchasing" + chosenProduct.product_name + ". You have purchased " + answer.quantity + ".");
+            startOver()
           }
-        }
-
-        if (chosenProduct.stock_quantity > parseInt(answer.quantity))
-          var query = connection.query(
-            "UPDATE products SET ? WHERE ?",
-            // Stuck
-            [
-              {
-                stock_quantity: -1
-              },
-            ],
-            function (err, res) {
-              console.log(res.affectedRows + " product updated!\n");
-            }
-          );
-
-        // Logs the actual query being run THIS IS IMPORTANT SO YOU CAN SEE THE WHOLE THING
-        console.log(query.sql);
+        );
+      } else {
+        console.log("We do not have that many.");
+        startOver()
       }
-
-    })
+    }
   })
-
-
 }
 
+// If not, notify with alert.
+// If so, fulfill the order: 1) update database with new quantity, 2) display total cost of purchase
 
+function startOver() {
+  inquirer.prompt([
+    {
+      name: "confirm",
+      type: "confirm",
+      message: "Would you like to purchase another item?"
+    }
 
-  // After order is placed, check to see if enough inventory. 
-  // If not, notify with alert.
-  // If so, fulfill the order: 1) update database with new quantity, 2) display total cost of purchase
+  ]).then(function (answer) {
+    if (answer.confirm) {
+      displayProducts()
+    } else {
+      console.log("Thank you for shopping at Bamazon. Have a great day.");
+      process.exit()
+    }
+  })
+}

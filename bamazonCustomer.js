@@ -47,7 +47,6 @@ function selectProducts(inventory) {
       message: "What is the ID of the product you would like to purchase?\n",
       validate: function(value) {
         if (isNaN(value) === false) {
-          // Need to console log that they enter a number instead
           return true;
         }
         return false;
@@ -59,7 +58,6 @@ function selectProducts(inventory) {
       message: "How many would you like to purchase?\n",
       validate: function(value) {
         if (isNaN(value) === false) {
-          // Need to console log that they enter a number instead
           return true;
         }
         return false;

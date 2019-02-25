@@ -1,3 +1,6 @@
+// Please disreagard this for homework: it is a work in progress.
+// I tried to add it to .gitignore
+
 // Require mysql and inquirer
 var mysql = require('mysql');
 var inquirer = require('inquirer');
@@ -24,6 +27,7 @@ connection.connect(function (err) {
     runSearch()
 });
 
+// Prompts user to select what they would like to do
 function runSearch() {
     inquirer
         .prompt({
@@ -37,6 +41,7 @@ function runSearch() {
                 "Add New Product"
             ]
         }).then(function (answer) {
+            // Switch function based upon user's choice
             switch (answer.action) {
                 case "View Products for Sale":
                     displayProducts()
@@ -71,7 +76,7 @@ function displayProducts() {
     });
 };
 
-// WOULD LIKE TO ADD NOTIFICATION THAT NO INVENTORY MEETS THIS REQUEST
+// Display items with inventory less than 50
 function lowInventory() {
     var query = "SELECT * FROM products WHERE stock_quantity < 50";
     connection.query(query, function (err, res) {
@@ -85,35 +90,67 @@ function lowInventory() {
     });
 };
 
-// function addInventory() {
-//     inquirer
-//         .prompt([
-//             {
-//                 name: "input",
-//                 type: "id",
-//                 message: "Please enter the id of exiting inventory you would like to add."
-//                 // Need to validate
-//             },
-//             {
-//                 name: "input",
-//                 type: "quantity",
-//                 message: "How many of this item would you like to add?"
-//                 // Need to validate
-//             }
-//         ]).then(function (answer) {
-//             console.log("Updating inventory...\n");
-//             var query = connection.query("UPDATE products SET ? WHERE ?",
-//             [
+
+// Allow user to add to existing inventory item
+function addInventory() {
+    inquirer
+        .prompt([
+            {
+                name: "input",
+                type: "list",
+                message: "Please choose the ID of the item you would like to add.\n",
+                choices: function () {
+                    var choiceArray = [];
+                    for (i = 0; i < data.length; i++) {
+                        choiceArray.push(data[i].item_id);
+                    };
+                    return choiceArray;
+                },
+            },
+            {
+                name: "input",
+                type: "quantity",
+                message: "How many of this item would you like to add?"
+            }
+        ]).then(function (answer) {
+
+            var chosen;
+            connection.query("SELECT * FROM products", function (err, res) {
+                if (err) throw err;
+                console.log("Selecting Inventory.\n");
+                // Loops to find the id and information for specified inventory item
+                for (var i = 0; i < res.length; i++) {
+                    if (data[i].item_id === answer.addInventory) {
+                        chosen = data[i];
+                    };
+                };
+            });
+            connection.query("UPDATE bamazon_products SET ? WHERE ?", function (err, res) {
+                if (err) throw err;
+                console.log("Updating Inventory.\n");
+
+                Array.push("ID: " + res[i].item_id + " | " + "Product: " + res[i].product_name + " | " + "Department: " + res[i].department_name + " | " + "Price: " + res[i].price + " | " + "Quantity: " + res[i].stock_quantity);
+                console.log('------------------------------------------------------------------------------------------------------------');
+
+            });
+
+        })
 
 
-//             ],
-//             function (err, res) {
-//                 console.log(res.affectedRows + " products updated!\n")
-//             }
 
-//             );
-//             });
-       
-// }
+    console.log("Updating inventory...\n");
+    var query = connection.query("UPDATE products SET ? WHERE ?",
+        [
+
+
+        ],
+        function (err, res) {
+            console.log(res.affectedRows + " products updated!\n")
+        }
+
+    );
+});
+
+}
 
 

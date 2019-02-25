@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+    <title>Bamazon Application</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+        integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <link href="assets/css/style.css" rel="stylesheet" type="text/css" />
+
+<body>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-10">
+                <h1>Bamazon MySQL & Node.js Application</h1>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-10">
+                <p>In this project, I creating a storefront through the use of newly-acquired MySQL skills.
+                    The app allows the user "customer" to select a product for purchase, and the store updates inventory
+                    accordingly.
+                    If there is not enough inventory, the store alerts the customer. I chose a backyard pool party theme
+                    because it's currently February, and this winter has been awful.</p>
+                <p><a href="https://github.com/ashbshaw/bamazon">Please visit my GitHub page to run the application.</a>
+                </p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-10">
+                <h2>Project Instructions</h2>
+                <h4>Customer Interface</h4>
+                <ol>
+                    <li>Create a MySQL Database called Bamazon.</li>
+                    <li>Then, create a table inside of that database called products.</li>
+                    <li>The products table should have each of the following columns:
+                        <ul>
+                            <li>Item_id (unique id for each product)</li>
+                            <li>Product_name (Name of product)</li>
+                            <li>Department_name</li>
+                            <li>Price (cost to customer)</li>
+                            <li>Stock_quantity (how much of the product is available in stores)</li>
+                        </ul>
+                    </li>
+                    <li>Populate this database with around 10 different products (i.e. insert "mock" data rows into this
+                        database and table).</li>
+                    <li>Then, create a Node application called bamazonCustomer.js. Running this application will first
+                        display all information about all of the items available for sale.</li>
+                    <li>The products table should have each of the following columns:
+                        <ul>
+                            <li>The first should ask them the ID of the product they would like to buy.</li>
+                            <li>The second message should ask how many units of the product they would like to buy.</li>
+                        </ul>
+                    </li>
+                    <li>Once the customer has placed the order, your application should check if your store has enough
+                        of the product to meet the customer's request:
+                        <ul>
+                            <li>If not, the app should log a phase like Insufficient quantity!, and then prevent the
+                                order from going through.</li>
+                            <li>If so, the app will fullfill the order and update the SQL database to reflect the
+                                remaining quantity.</li>
+                        </ul>
+                    </li>
+                    <li>Once the update goes through, show the customer the total cost of their purchase.</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-10">
+                <h2>Technologies Used</h2>
+                <h4>NPM Installation</h4>
+                <p>Navigate to the root of your project. Then in the terminal command line run npm init, this will
+                    initalize a package.json for your project. Include the following NPM installations:
+                    <ul>
+                        <li>npm install mysql</li>
+                        <li>npm install inquirer</li>
+                    </ul>
+                </p>
+                <h4>Programs</h4>
+                <ul>
+                    <li>MySQL Workbench</li>
+                    <li>Node.js</li>
+                </ul>
+                <h4>Connection to MySQL Database</h4>
+                <p>You must create a connection between MySQL and Node using your MySQL password and database name.</p>
+                <img src="./assets/images/connection.PNG">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-10">
+                <h2>Submission Screenshots</h2>
+                <h4>MySQL Database</h4>
+                <p>Set up your MySQL Database as a first step.</p>
+                <img src="./assets/images/mysql.PNG">
+                <h4>Bamazon</h4>
+                <p>"Display Products" will show all items available at Bamazon.</p>
+                <img src="./assets/images/products.PNG" img style="padding: 0px 0px 20px 0px">
+                <p>The user then selects the product they would like to purchase.</p>
+                <img src="./assets/images/purchase.PNG" img style="padding: 0px 0px 20px 0px">
+                <p>The database is updated based upon the quantity purchased. If there is not enough of the item, the
+                    user is notified.</p>
+                <p>The user has the opportunity to exit the store or shop for additional items after the transaction is
+                    completed.</p>
+                <img src="./assets/images/purchase2.PNG" img style="padding: 0px 0px 20px 0px">
+                <h4>Thank you for visiting!</h4>
+            </div>
+        </div>
+    </div>
+
+</body>
+</head>
+
+</html>
